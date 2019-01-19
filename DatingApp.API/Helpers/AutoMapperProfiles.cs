@@ -9,7 +9,7 @@ namespace DatingApp.API.Helpers
     {
         public AutoMapperProfiles()
         {
-            AllowNullDestinationValues = true;
+            //AllowNullDestinationValues = true;
 
             CreateMap<User, UserForListDto>()
                 .ForMember(dest => dest.PhotoUrl, opt =>
@@ -36,6 +36,13 @@ namespace DatingApp.API.Helpers
             CreateMap<Photo, PhotoForReturnDto>();
             CreateMap<PhotoForCreationDto, Photo>();
             CreateMap<UserForRegisterDto, User>();
+            CreateMap<Message, MessageForCreationDto>();
+            CreateMap<MessageForCreationDto, Message>();
+            CreateMap<Message, MessageToReturnDto>()
+                .ForMember(m => m.SenderPhotoUrl, opt => opt
+                .MapFrom(x => x.Sender.Photos.FirstOrDefault(t => t.IsMain).Url))
+                .ForMember(m => m.RecipientPhotoUrl, opt => opt
+                .MapFrom(x => x.Recipient.Photos.FirstOrDefault(t => t.IsMain).Url));
         }
     }
 }
